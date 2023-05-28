@@ -1,0 +1,30 @@
+.box1{
+
+    height: 90px;
+    width: 90px;
+    background-color: green;
+    border-style: solid;
+    border-color: black;
+    border-width: 5px;
+    
+}
+
+.hit{
+
+    background-image: url(assets/ship.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    
+}
+
+.miss{
+
+    background-image: url(assets/miss.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+
+
