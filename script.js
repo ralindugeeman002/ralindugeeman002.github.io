@@ -1,4 +1,4 @@
-function func(){
+function click(){
 
 
     window.location = "project/index.html";
