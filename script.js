@@ -13,5 +13,5 @@ function btle(){
 function cal(){
 
 
-    window.location = "calculator/index.php";
+    window.location = "calculator/index.html";
 }
