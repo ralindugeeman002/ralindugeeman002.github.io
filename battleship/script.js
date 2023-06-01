@@ -133,7 +133,7 @@ var controller ={
  prosessGuess : function(guess){
     var location  = parseGuess(guess);
     if(location){
-        this.guesses;
+        this.guesses++;
         var hit = model.fire(location);
         if(hit && model.shipSunk === model.numShip){
             alert("You sank all my battleships, in " + 
