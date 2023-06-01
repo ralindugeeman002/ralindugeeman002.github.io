@@ -69,7 +69,7 @@ var model = {
                 view.displayHit(guess);
                 view.displayMessage("hit");
                 if(this.isSunk(ship)){
-                    view.displayMessage("you sank my ship");
+                    alert("you sank my ship");
                     this.shipSunk++
                 }
                 return true;
@@ -136,7 +136,7 @@ var controller ={
         this.guesses;
         var hit = model.fire(location);
         if(hit && model.shipSunk === model.numShip){
-            view.displayMessage("You sank all my battleships, in " + 
+            alert("You sank all my battleships, in " + 
             this.guesses + " guesses");
 
         }
