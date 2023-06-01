@@ -15,10 +15,6 @@ function cal(){
 
     window.location = "calculator/index.html";
 }
-function epic(){
 
-
-    window.location = "my_project/index.php";
-}
 
 
