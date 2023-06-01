@@ -1,72 +1,41 @@
-.signout:hover{
-    cursor: pointer;
-    color:  orange;
-}
 
 @font-face {
     font-family: "inter1";
-    src: url("assets/fonts/static/Inter-Bold.ttf");
+    src: url("assets/fonts/Inter-VariableFont_slnt\,wght.ttf");
 }
-@font-face {
-    font-family: "inter2";
-    src: url("assets/fonts/static/Inter-ExtraBold.ttf");
-}
-@font-face {
-    font-family: "inter3";
-    src: url("assets/fonts/static/Inter-Regular.ttf");
-}
+
+
+
+
 
 .font1{
-    font-family: "inter2";
-    color: hsl(240, 100%, 5%);
-    font-size: "28px";
-    
+
+    color: hsl(236, 13%, 42%);
+    font-size: 15px;
+    font-family: "inter1";
+
 }
+
 
 .font2{
-    font-family: "inter3";
-    color: hsl(233, 8%, 79%);
-    font-size: "15px";
+
+    color: hsl(240, 100%, 5%);
+    font-weight: 800;
+    font-size: 44px;
 }
-
-
 
 
 .btn1{
 
-    background-color: hsl(5, 85%, 63%);
-    color: white;
-    padding: 13px 50px;
-    border-color: hsl(5, 85%, 63%);
-    
+background-color:  hsl(5, 85%, 63%);
+color: white;
+border-color: hsl(5, 85%, 63%);
+padding: 11px 35px;
 
 }
 
 .btn1:hover{
-    background-color: hsl(240, 100%, 5%);
+
     border-color: hsl(240, 100%, 5%);
-}
-
-.siteclk{
-
-    color: white;
-}
-
-.siteclk:hover{
-
-    color: hsl(35, 77%, 62%);
-    cursor: pointer;
-
-
-}
-
-.siteclk2{
-
-    color: hsl(240, 100%, 5%);
-}
-
-.siteclk2:hover{
-
-    color:  hsl(5, 85%, 63%);
-    cursor: pointer;
+    background-color: hsl(240, 100%, 5%);;
 }
