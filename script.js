@@ -18,7 +18,7 @@ function cal(){
 function epic(){
 
 
-    window.location = "my project/index.php";
+    window.location = "my_project/index.php";
 }
 
 
