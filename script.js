@@ -10,7 +10,7 @@ function cal(){
     window.location = "calculator/index.html";
 }
 
-function click(){
+function clik(){
 
     window.location = "project/index.html";
 }
