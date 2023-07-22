@@ -16,4 +16,9 @@ function clik(){
 }
 
 
+function game(){
+
+    window.location = "game/index.html";
+}
+
 
