@@ -6,23 +6,23 @@
 # Date: April 05, 2025
 # License: MIT
 
-. ./theme || exit
+# . ./theme || exit
 
-readarray -t SOCIALS << "EOF"
-Instagram|https://ysap.sh/instagram
-YouTube|https://ysap.sh/youtube
-Patreon|https://ysap.sh/patreon
-Discord|https://ysap.sh/discord
-Twitch|https://ysap.sh/twitch
-EOF
+# readarray -t SOCIALS << "EOF"
+# Instagram|https://ysap.sh/instagram
+# YouTube|https://ysap.sh/youtube
+# Patreon|https://ysap.sh/patreon
+# Discord|https://ysap.sh/discord
+# Twitch|https://ysap.sh/twitch
+# EOF
 
-UNDERLINE=$'\x1b[3m'
+# UNDERLINE=$'\x1b[3m'
 
-for line in "${SOCIALS[@]}"; do
-	IFS='|' read -r name url <<< "$line"
+# for line in "${SOCIALS[@]}"; do
+# 	IFS='|' read -r name url <<< "$line"
 
-	echo -n "$COLOR2$name$RST"
-	echo -n '|'
-	echo -n "$UNDERLINE$COLOR2$url$RST"
-	echo
-done
+# 	echo -n "$COLOR2$name$RST"
+# 	echo -n '|'
+# 	echo -n "$UNDERLINE$COLOR2$url$RST"
+# 	echo
+# done
