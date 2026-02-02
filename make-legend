@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 #
-# Generate the TechStack list with VERTICAL GAPS
+# Generate the TechStack list in a HORIZONTAL GRID (No Descriptions)
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # License: MIT
 
 . ./theme || exit
-
-UNDERLINE=$'\x1b[3m'
 
 format-box() {
     local title=$1
@@ -19,45 +17,41 @@ format-box() {
     local cmd_re='^(\$ [^ ]+)(.*)$'
     {
         echo '%'
-        local line a b c icon name url
+        local line icon name item_str i
         
-        # Loop through each item
+        i=0
+        # Loop through items
         for line in "$@"; do
-            IFS='%' read -r a b c <<< "$line"
+            # We strictly read only 2 parts: Icon%Name
+            IFS='%' read -r icon name <<< "$line"
 
-            # Logic to split Icon%Name%Description
-            if [[ -n $c ]]; then
-                icon=$a
-                name=$b
-                url=$c
-            else
-                icon=""
-                name=$a
-                url=$b
-            fi
-
-            # 1. Print Placeholder (Centered)
+            # Check if Icon exists
             if [[ -n $icon ]]; then
-                 echo "  $icon"
-            fi
-
-            # 2. Print Name & Description (ALIGNED)
-            # Changed %-15s to %-13s to bring description closer
-            if [[ $name =~ $cmd_re ]]; then
-                local cmd=${BASH_REMATCH[1]}
-                local rest=${BASH_REMATCH[2]}
-                echo -n "$COLOR3$cmd$RST$COLOR5$rest"
+                # Create the string: Icon + Name
+                item_str="  $icon  $COLOR3$name$RST"
             else
-                printf "${COLOR3}%-13s${RST}" "$name"
+                # Just Name (for things without icons)
+                item_str="$COLOR3$name$RST"
             fi
 
-            echo -n '%'
-            echo -n "$COLOR1$UNDERLINE$url$RST"
-            echo
-            
-            # NEW: Add an empty line AFTER each item to create the vertical gap
-            echo " " 
+            # PRINT SIDE-BY-SIDE
+            # Pad the item with spaces so columns align neatly.
+            # %-40s means "Make this string 40 chars wide"
+            printf "%-40s" "$item_str"
+
+            # LOGIC: Every 2nd item, start a new line
+            ((i++))
+            if (( i % 2 == 0 )); then
+                echo ""      # New line
+                echo " "     # Vertical Gap
+            fi
         done
+        
+        # If we ended on an odd number (1 item left over), close the line
+        if (( i % 2 != 0 )); then
+            echo ""
+        fi
+
     } | ./tools/box -s '%' -hp 1 -tc "$COLOR5" -T plain -t "$title"
 }
 
@@ -70,11 +64,12 @@ while getopts 'f' opt; do
 done
 
 # === TECH STACK ===
+# Format is simple now: Placeholder%Name
 legend=(
-    '__K__%Linux%Operating System / Kali'
-    '__B__%BurpSuite%Web Vulnerability Scanner'
-    '__W__%WireShark%Network Protocol Analyzer'
-    '__N__%Nmap%Network Discovery & Auditing'
+    '__K__%Linux'
+    '__B__%BurpSuite'
+    '__W__%WireShark'
+    '__N__%Nmap'
 )
 
 resources=()
@@ -82,8 +77,8 @@ extras=()
 
 if $full; then
     legend+=(
-        '__M__%Metasploit%Penetration Testing Framework'
-        '__P__%Python%Scripting & Automation'
+        '__M__%Metasploit'
+        '__P__%Python'
     )
 
     resources+=(
