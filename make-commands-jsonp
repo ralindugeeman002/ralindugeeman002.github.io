@@ -7,11 +7,11 @@
 # License: MIT
 
 # Define the Image Tags (Use single quotes inside the double quotes)
-IMG_KALI="<img src='/static/img/kali.png' style='height:25px; vertical-align:middle' />"
-IMG_BURP="<img src='/static/img/burp.jpg' style='height:25px; vertical-align:middle' />"
-IMG_WIRE="<img src='/static/img/wireshark.png' style='height:25px; vertical-align:middle' />"
-IMG_NMAP="<img src='/static/img/nmap.jpg' style='height:25px; vertical-align:middle' />"
-IMG_META="<img src='/static/img/metasploit.png' style='height:25px; vertical-align:middle' />"
+IMG_KALI="<img src='static/img/kali.png' style='height:25px; vertical-align:middle' />"
+IMG_BURP="<img src='static/img/burp.jpg' style='height:25px; vertical-align:middle' />"
+IMG_WIRE="<img src='static/img/wireshark.png' style='height:25px; vertical-align:middle' />"
+IMG_NMAP="<img src='static/img/nmap.jpg' style='height:25px; vertical-align:middle' />"
+IMG_META="<img src='static/img/metasploit.png' style='height:25px; vertical-align:middle' />"
 IMG_PYTH="<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:25px; vertical-align:middle' />"
 
 # Generate the raw terminal output
