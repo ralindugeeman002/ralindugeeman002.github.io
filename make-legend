@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generate the Legend (help message) - intended to be passed to `tools/box`
+# Generate the TechStack list - intended to be passed to `tools/box`
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # Date: April 05, 2025
@@ -11,68 +11,77 @@
 UNDERLINE=$'\x1b[3m'
 
 format-box() {
-	local title=$1
-	shift
+    local title=$1
+    shift
 
-	if [[ -z $1 ]]; then
-		return
-	fi
-	local cmd_re='^(\$ [^ ]+)(.*)$'
-	{
-		echo '%'
-		local line name url
-		for line in "$@"; do
-			IFS='%' read -r name url <<< "$line"
+    if [[ -z $1 ]]; then
+        return
+    fi
+    # Regex to detect commands (starts with $)
+    local cmd_re='^(\$ [^ ]+)(.*)$'
+    {
+        echo '%'
+        local line name url
+        for line in "$@"; do
+            IFS='%' read -r name url <<< "$line"
 
-			if [[ $name =~ $cmd_re ]]; then
-				local cmd=${BASH_REMATCH[1]}
-				local rest=${BASH_REMATCH[2]}
+            # Check if it looks like a command ($ ...)
+            if [[ $name =~ $cmd_re ]]; then
+                local cmd=${BASH_REMATCH[1]}
+                local rest=${BASH_REMATCH[2]}
 
-				echo -n "$COLOR3$cmd$RST$COLOR5$rest"
-			else
-				echo -n "$COLOR5$name$RST"
-			fi
+                echo -n "$COLOR3$cmd$RST$COLOR5$rest"
+            else
+                # If not a command, print it in Color 3 (Green) to match the old look
+                # or keep Color 5 (Purple) if you prefer. 
+                # I switched it to COLOR3 here so 'Linux' pops out like the commands did.
+                echo -n "$COLOR3$name$RST"
+            fi
 
-			echo -n '%'
-			echo -n "$COLOR1$UNDERLINE$url$RST"
-			echo
-		done
-	} | ./tools/box -s '%' -hp 1 -tc "$COLOR5" -T plain -t "$title"
+            echo -n '%'
+            echo -n "$COLOR1$UNDERLINE$url$RST"
+            echo
+        done
+    } | ./tools/box -s '%' -hp 1 -tc "$COLOR5" -T plain -t "$title"
 }
 
 full='false'
 while getopts 'f' opt; do
-	case "$opt" in
-		f) full='true';;
-		*) exit 1;;
-	esac
+    case "$opt" in
+        f) full='true';;
+        *) exit 1;;
+    esac
 done
 
+# HERE IS YOUR NEW TECH STACK
+# Format: Name%Description
 legend=(
-	'$ curl ysap.sh%Get this page'
-	'$ curl ysap.sh/episodes%Get the list of episodes in the YSAP series'
-	'$ curl ysap.sh/json%Get the above in JSON format'
-	'$ curl ysap.sh/help%Get the full list of available endpoints'
+    'Linux%Operating System / Kali'
+    'BurpSuite%Web Vulnerability Scanner'
+    'WireShark%Network Protocol Analyzer'
+    'Nmap%Network Discovery & Auditing'
+	'Metasploit%Penetration Testing Framework'
 )
 resources=()
 extras=()
 
 if $full; then
-	legend+=(
-		'$ curl ysap.sh/ping%Get a 200 with the text pong'
-		'$ curl [-46] ysap.sh/ip%Get your current IP address as a string'
-	)
+    legend+=(
+        'Metasploit%Penetration Testing Framework'
+        'Python%Scripting & Automation'
+    )
 
-	resources+=(
-		'$ curl style.ysap.sh%Bash Style Guide for writing safe scripts'
-	)
+    resources+=(
+        'Bash%Shell Scripting'
+    )
 
-	extras+=(
-		'$ curl xmas.ysap.sh | bash%Christmas tree animation'
-		'$ curl nightfall.ysap.sh | bash%Music Album TUI'
-	)
+    extras+=(
+        'Git%Version Control'
+        'Docker%Containerization'
+    )
 fi
 
-format-box Legend "${legend[@]}"
+# CHANGED TITLE TO "TechStack"
+format-box TechStack "${legend[@]}"
 format-box Resources "${resources[@]}"
 format-box Extras "${extras[@]}"
