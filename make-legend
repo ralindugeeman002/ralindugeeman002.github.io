@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generate the TechStack list with ALIGNED COLUMNS
+# Generate the TechStack list with VERTICAL GAPS
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # License: MIT
@@ -21,6 +21,7 @@ format-box() {
         echo '%'
         local line a b c icon name url
         
+        # Loop through each item
         for line in "$@"; do
             IFS='%' read -r a b c <<< "$line"
 
@@ -35,30 +36,27 @@ format-box() {
                 url=$b
             fi
 
-            # 1. Print Placeholder (Centered over text)
+            # 1. Print Placeholder (Centered)
             if [[ -n $icon ]]; then
                  echo "  $icon"
             fi
 
             # 2. Print Name & Description (ALIGNED)
-            # We use printf to make sure the Name takes up exactly 15 spaces
-            # This ensures the Description always starts at the same spot.
-            
+            # Changed %-15s to %-13s to bring description closer
             if [[ $name =~ $cmd_re ]]; then
-                # Special handling for command-line style items
                 local cmd=${BASH_REMATCH[1]}
                 local rest=${BASH_REMATCH[2]}
                 echo -n "$COLOR3$cmd$RST$COLOR5$rest"
             else
-                # STANDARD ITEMS:
-                # %-15s means "pad with spaces until 15 chars wide"
-                # We apply the color first, then print the padded name
-                printf "${COLOR3}%-15s${RST}" "$name"
+                printf "${COLOR3}%-13s${RST}" "$name"
             fi
 
             echo -n '%'
             echo -n "$COLOR1$UNDERLINE$url$RST"
             echo
+            
+            # NEW: Add an empty line AFTER each item to create the vertical gap
+            echo " " 
         done
     } | ./tools/box -s '%' -hp 1 -tc "$COLOR5" -T plain -t "$title"
 }
@@ -72,7 +70,6 @@ while getopts 'f' opt; do
 done
 
 # === TECH STACK ===
-# Placeholders are kept short (__K__) for the box calculation.
 legend=(
     '__K__%Linux%Operating System / Kali'
     '__B__%BurpSuite%Web Vulnerability Scanner'
