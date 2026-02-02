@@ -18,12 +18,17 @@
 [0m
     [0m[38;5;223mTechStack[0m[0m
    [0m             [0m[0m
+   [0m   <img src='/static/img/kali.png' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mLinux[0m       [0m [38;5;87m[3mOperating System / Kali[0m[0m
+   [0m   <img src='/static/img/burp.jpg' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mBurpSuite[0m   [0m [38;5;87m[3mWeb Vulnerability Scanner[0m[0m
+   [0m   <img src='/static/img/wireshark.png' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mWireShark[0m   [0m [38;5;87m[3mNetwork Protocol Analyzer[0m[0m
+   [0m   <img src='/static/img/nmap.jpg' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mNmap[0m        [0m [38;5;87m[3mNetwork Discovery & Auditing[0m[0m
+   [0m   <img src='/static/img/metasploit.png' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mMetasploit[0m  [0m [38;5;87m[3mPenetration Testing Framework[0m[0m
-   [0m [38;5;120mMetasploit[0m  [0m [38;5;87m[3mPenetration Testing Framework[0m[0m
+   [0m   <img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:30px; vertical-align:middle' />     [0m[0m
    [0m [38;5;120mPython[0m      [0m [38;5;87m[3mScripting & Automation[0m[0m
 [0m
     [0m[38;5;223mResources[0m[0m

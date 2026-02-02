@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generate the TechStack list - intended to be passed to `tools/box`
+# Generate the TechStack list with REAL IMAGES
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # Date: April 05, 2025
@@ -17,24 +17,36 @@ format-box() {
     if [[ -z $1 ]]; then
         return
     fi
-    # Regex to detect commands (starts with $)
     local cmd_re='^(\$ [^ ]+)(.*)$'
     {
         echo '%'
-        local line name url
+        local line a b c icon name url
+        
         for line in "$@"; do
-            IFS='%' read -r name url <<< "$line"
+            IFS='%' read -r a b c <<< "$line"
 
-            # Check if it looks like a command ($ ...)
+            # Logic to split Icon%Name%Description
+            if [[ -n $c ]]; then
+                icon=$a
+                name=$b
+                url=$c
+            else
+                icon=""
+                name=$a
+                url=$b
+            fi
+
+            # Print Icon Placeholder (aligned with 2 spaces)
+            if [[ -n $icon ]]; then
+                 echo "  $icon"
+            fi
+
+            # Print Name
             if [[ $name =~ $cmd_re ]]; then
                 local cmd=${BASH_REMATCH[1]}
                 local rest=${BASH_REMATCH[2]}
-
                 echo -n "$COLOR3$cmd$RST$COLOR5$rest"
             else
-                # If not a command, print it in Color 3 (Green) to match the old look
-                # or keep Color 5 (Purple) if you prefer. 
-                # I switched it to COLOR3 here so 'Linux' pops out like the commands did.
                 echo -n "$COLOR3$name$RST"
             fi
 
@@ -53,22 +65,23 @@ while getopts 'f' opt; do
     esac
 done
 
-# HERE IS YOUR NEW TECH STACK
-# Format: Name%Description
+# === TECH STACK WITH PLACEHOLDERS ===
+# We use short placeholders (like __K__) so the ASCII box calculates width correctly.
+# We will swap these for real images at the bottom of the script.
 legend=(
-    'Linux%Operating System / Kali'
-    'BurpSuite%Web Vulnerability Scanner'
-    'WireShark%Network Protocol Analyzer'
-    'Nmap%Network Discovery & Auditing'
-	'Metasploit%Penetration Testing Framework'
+    '__K__%Linux%Operating System / Kali'
+    '__B__%BurpSuite%Web Vulnerability Scanner'
+    '__W__%WireShark%Network Protocol Analyzer'
+    '__N__%Nmap%Network Discovery & Auditing'
 )
+
 resources=()
 extras=()
 
 if $full; then
     legend+=(
-        'Metasploit%Penetration Testing Framework'
-        'Python%Scripting & Automation'
+        '__M__%Metasploit%Penetration Testing Framework'
+        '__P__%Python%Scripting & Automation'
     )
 
     resources+=(
@@ -81,7 +94,17 @@ if $full; then
     )
 fi
 
-# CHANGED TITLE TO "TechStack"
-format-box TechStack "${legend[@]}"
+# 1. Capture the "TechStack" box output
+# 2. Use SED to replace placeholders with HTML Image tags
+#    We use style='height:25px' to make sure they fit nicely.
+format-box TechStack "${legend[@]}" | sed \
+    -e "s|__K__|<img src='/static/img/kali.png' style='height:30px; vertical-align:middle' />|g" \
+    -e "s|__B__|<img src='/static/img/burp.jpg' style='height:30px; vertical-align:middle' />|g" \
+    -e "s|__W__|<img src='/static/img/wireshark.png' style='height:30px; vertical-align:middle' />|g" \
+    -e "s|__N__|<img src='/static/img/nmap.jpg' style='height:30px; vertical-align:middle' />|g" \
+    -e "s|__M__|<img src='/static/img/metasploit.png' style='height:30px; vertical-align:middle' />|g" \
+    -e "s|__P__|<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:30px; vertical-align:middle' />|g"
+
+# Print the other boxes normally
 format-box Resources "${resources[@]}"
 format-box Extras "${extras[@]}"
