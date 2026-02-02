@@ -1,25 +1,45 @@
 #!/usr/bin/env bash
 #
-# Create the JSONP file for the commands to execute on index.html using the
-# terminal emulator as seen from the web browser.
+# Create the JSONP file for the web terminal
+# WE INJECT IMAGES HERE
 #
 # Author: Dave Eddy <dave@daveeddy.com>
-# Date: April 03, 2025
 # License: MIT
 
-# we can declare multiple commands here, but for now i just like having 1
+# Define the Image Tags (Use single quotes inside the double quotes)
+IMG_KALI="<img src='/static/img/kali.png' style='height:25px; vertical-align:middle' />"
+IMG_BURP="<img src='/static/img/burp.jpg' style='height:25px; vertical-align:middle' />"
+IMG_WIRE="<img src='/static/img/wireshark.png' style='height:25px; vertical-align:middle' />"
+IMG_NMAP="<img src='/static/img/nmap.jpg' style='height:25px; vertical-align:middle' />"
+IMG_META="<img src='/static/img/metasploit.png' style='height:25px; vertical-align:middle' />"
+IMG_PYTH="<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:25px; vertical-align:middle' />"
+
+# Generate the raw terminal output
+raw_output=$(./make-index | ./tools/bansi-to-html -H)
+
+# SWAP THE PLACEHOLDERS FOR REAL IMAGES
+# We use python or sed to replace the text __K__ with the HTML tag
+final_output=$(echo "$raw_output" | sed \
+    -e "s|__K__|$IMG_KALI|g" \
+    -e "s|__B__|$IMG_BURP|g" \
+    -e "s|__W__|$IMG_WIRE|g" \
+    -e "s|__N__|$IMG_NMAP|g" \
+    -e "s|__M__|$IMG_META|g" \
+    -e "s|__P__|$IMG_PYTH|g")
+
 declare -A cmds
-cmds['curl ysap.sh']=$(./make-index | ./tools/bansi-to-html -H)
-#cmds['curl ysap.sh/help']=$(./make-help-page | ansi2html -p)
+cmds['curl ysap.sh']="$final_output"
 
 inputs=()
 for cmd in "${!cmds[@]}"; do
-	output=${cmds[$cmd]}
-	s=$(jq -cnR --arg cmd "$cmd" '{
-	    "cmd": $cmd,
-	    "lines": [inputs]
-	}' <<< "$output") || exit 1
-	inputs+=("$s")
+    output=${cmds[$cmd]}
+    # We use jq to package it safely, but since we already injected HTML,
+    # the browser will render it when it unpacks the string.
+    s=$(jq -cnR --arg cmd "$cmd" --arg lines "$output" '{
+        "cmd": $cmd,
+        "lines": [$lines]
+    }') || exit 1
+    inputs+=("$s")
 done
 
 json=$(printf '%s\n' "${inputs[@]}" | jq -cn '[inputs]') || exit 1

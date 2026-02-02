@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 #
-# Generate the TechStack list with REAL IMAGES
+# Generate the TechStack list with PLACEHOLDERS
 #
 # Author: Dave Eddy <dave@daveeddy.com>
-# Date: April 05, 2025
 # License: MIT
 
 . ./theme || exit
@@ -36,7 +35,7 @@ format-box() {
                 url=$b
             fi
 
-            # Print Icon Placeholder (aligned with 2 spaces)
+            # Print Placeholder (aligned with 2 spaces)
             if [[ -n $icon ]]; then
                  echo "  $icon"
             fi
@@ -66,8 +65,8 @@ while getopts 'f' opt; do
 done
 
 # === TECH STACK WITH PLACEHOLDERS ===
-# We use short placeholders (like __K__) so the ASCII box calculates width correctly.
-# We will swap these for real images at the bottom of the script.
+# We use these codes so the box draws correctly.
+# We will swap them for images later in make-commands-jsonp
 legend=(
     '__K__%Linux%Operating System / Kali'
     '__B__%BurpSuite%Web Vulnerability Scanner'
@@ -94,17 +93,6 @@ if $full; then
     )
 fi
 
-# 1. Capture the "TechStack" box output
-# 2. Use SED to replace placeholders with HTML Image tags
-#    We use style='height:25px' to make sure they fit nicely.
-format-box TechStack "${legend[@]}" | sed \
-    -e "s|__K__|<img src='/static/img/kali.png' style='height:30px; vertical-align:middle' />|g" \
-    -e "s|__B__|<img src='/static/img/burp.jpg' style='height:30px; vertical-align:middle' />|g" \
-    -e "s|__W__|<img src='/static/img/wireshark.png' style='height:30px; vertical-align:middle' />|g" \
-    -e "s|__N__|<img src='/static/img/nmap.jpg' style='height:30px; vertical-align:middle' />|g" \
-    -e "s|__M__|<img src='/static/img/metasploit.png' style='height:30px; vertical-align:middle' />|g" \
-    -e "s|__P__|<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:30px; vertical-align:middle' />|g"
-
-# Print the other boxes normally
+format-box TechStack "${legend[@]}"
 format-box Resources "${resources[@]}"
 format-box Extras "${extras[@]}"
