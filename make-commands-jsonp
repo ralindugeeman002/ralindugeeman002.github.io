@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # Create the JSONP file for the web terminal
-# INJECTS IMAGES WITH CLEANER STYLING
+# FIXED: Restores "Typing Animation" by splitting lines correctly
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # License: MIT
 
-# Style: 35px height, centered vertically, with 5px bottom margin
-STYLE="height:35px; vertical-align:middle; margin-bottom:5px;"
+# Style: 50px height, centered, with margin
+STYLE="height:50px; vertical-align:middle; margin-right:10px;"
 
 # Define the Image Tags
 IMG_KALI="<img src='static/img/kali.png' style='$STYLE' />"
@@ -21,6 +21,7 @@ IMG_PYTH="<img src='https://raw.githubusercontent.com/devicons/devicon/master/ic
 raw_output=$(./make-index | ./tools/bansi-to-html -H)
 
 # SWAP PLACEHOLDERS
+# We inject the HTML image tags here
 final_output=$(echo "$raw_output" | sed \
     -e "s|__K__|$IMG_KALI|g" \
     -e "s|__B__|$IMG_BURP|g" \
@@ -35,10 +36,16 @@ cmds['curl ysap.sh']="$final_output"
 inputs=()
 for cmd in "${!cmds[@]}"; do
     output=${cmds[$cmd]}
-    s=$(jq -cnR --arg cmd "$cmd" --arg lines "$output" '{
+    
+    # CRITICAL FIX HERE:
+    # We use <<< "$output" at the end and [inputs] inside jq.
+    # This reads the variable line-by-line and creates a JSON array.
+    # The browser reads this array and "types" one line at a time.
+    s=$(jq -cnR --arg cmd "$cmd" '{
         "cmd": $cmd,
-        "lines": [$lines]
-    }') || exit 1
+        "lines": [inputs]
+    }' <<< "$output") || exit 1
+    
     inputs+=("$s")
 done
 
