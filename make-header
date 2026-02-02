@@ -1,41 +1,41 @@
-#!/usr/bin/env bash
-#
-# Print the colorized YSAP logo and metadata used as the header for all pages
-# you can request via `curl`
-#
-# Author: Dave Eddy <dave@daveeddy.com>
-# Date: March 17, 2024
-# License: MIT
+!/usr/bin/env bash
 
-# . ./theme || exit
-# . ./tools/repeat-char || exit
+Print the colorized YSAP logo and metadata used as the header for all pages
+you can request via `curl`
 
-# padding=1
-# while getopts 'p:' opt; do
-# 	case "$opt" in
-# 		p) padding=$OPTARG;;
-# 		*) exit 1;;
-# 	esac
-# done
+Author: Dave Eddy <dave@daveeddy.com>
+Date: March 17, 2024
+License: MIT
 
-# padding=$(repeat-char ' ' "$padding")
+. ./theme || exit
+. ./tools/repeat-char || exit
 
-# mapfile -t logo < <(./make-logo)
+padding=1
+while getopts 'p:' opt; do
+	case "$opt" in
+		p) padding=$OPTARG;;
+		*) exit 1;;
+	esac
+done
 
-# description=(
-# 	""
-# 	"${COLOR5}You Suck at Programming$RST"
-# 	"${COLOR5}Episodes and guide by dave eddy$RST"
-# 	"${COLOR1}https://ysap.sh | https://daveeddy.com$RST"
-# 	''
-# 	"${COLOR5}Source: ${COLOR1}https://github.com/bahamas10/ysap$RST"
-# )
+padding=$(repeat-char ' ' "$padding")
 
-# len=${#logo[@]}
+mapfile -t logo < <(./make-logo)
 
-# for ((i = 0; i < len; i++)); do
-# 	logo_line=${logo[i]}
-# 	desc_line=${description[i]}
+description=(
+	""
+	"${COLOR5}You Suck at Programming$RST"
+	"${COLOR5}Episodes and guide by dave eddy$RST"
+	"${COLOR1}https://ysap.sh | https://daveeddy.com$RST"
+	''
+	"${COLOR5}Source: ${COLOR1}https://github.com/bahamas10/ysap$RST"
+)
 
-# 	echo "$logo_line$padding$desc_line"
-# done
+len=${#logo[@]}
+
+for ((i = 0; i < len; i++)); do
+	logo_line=${logo[i]}
+	# desc_line=${description[i]}
+
+	echo "$logo_line$padding$desc_line"
+done
