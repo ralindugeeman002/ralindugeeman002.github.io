@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 #
 # Create the JSONP file for the web terminal
-# WE INJECT IMAGES HERE
+# INJECTS IMAGES WITH CLEANER STYLING
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # License: MIT
 
-# Define the Image Tags (Use single quotes inside the double quotes)
-IMG_KALI="<img src='static/img/kali.png' style='height:25px; vertical-align:middle' />"
-IMG_BURP="<img src='static/img/burp.jpg' style='height:25px; vertical-align:middle' />"
-IMG_WIRE="<img src='static/img/wireshark.png' style='height:25px; vertical-align:middle' />"
-IMG_NMAP="<img src='static/img/nmap.jpg' style='height:25px; vertical-align:middle' />"
-IMG_META="<img src='static/img/metasploit.png' style='height:25px; vertical-align:middle' />"
-IMG_PYTH="<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='height:25px; vertical-align:middle' />"
+# Style: 35px height, centered vertically, with 5px bottom margin
+STYLE="height:35px; vertical-align:middle; margin-bottom:5px;"
+
+# Define the Image Tags
+IMG_KALI="<img src='static/img/kali.png' style='$STYLE' />"
+IMG_BURP="<img src='static/img/burp.jpg' style='$STYLE' />"
+IMG_WIRE="<img src='static/img/wireshark.png' style='$STYLE' />"
+IMG_NMAP="<img src='static/img/nmap.jpg' style='$STYLE' />"
+IMG_META="<img src='static/img/metasploit.png' style='$STYLE' />"
+IMG_PYTH="<img src='https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' style='$STYLE' />"
 
 # Generate the raw terminal output
 raw_output=$(./make-index | ./tools/bansi-to-html -H)
 
-# SWAP THE PLACEHOLDERS FOR REAL IMAGES
-# We use python or sed to replace the text __K__ with the HTML tag
+# SWAP PLACEHOLDERS
 final_output=$(echo "$raw_output" | sed \
     -e "s|__K__|$IMG_KALI|g" \
     -e "s|__B__|$IMG_BURP|g" \
@@ -33,8 +35,6 @@ cmds['curl ysap.sh']="$final_output"
 inputs=()
 for cmd in "${!cmds[@]}"; do
     output=${cmds[$cmd]}
-    # We use jq to package it safely, but since we already injected HTML,
-    # the browser will render it when it unpacks the string.
     s=$(jq -cnR --arg cmd "$cmd" --arg lines "$output" '{
         "cmd": $cmd,
         "lines": [$lines]

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generate the TechStack list with PLACEHOLDERS
+# Generate the TechStack list with ALIGNED COLUMNS
 #
 # Author: Dave Eddy <dave@daveeddy.com>
 # License: MIT
@@ -35,18 +35,25 @@ format-box() {
                 url=$b
             fi
 
-            # Print Placeholder (aligned with 2 spaces)
+            # 1. Print Placeholder (Centered over text)
             if [[ -n $icon ]]; then
                  echo "  $icon"
             fi
 
-            # Print Name
+            # 2. Print Name & Description (ALIGNED)
+            # We use printf to make sure the Name takes up exactly 15 spaces
+            # This ensures the Description always starts at the same spot.
+            
             if [[ $name =~ $cmd_re ]]; then
+                # Special handling for command-line style items
                 local cmd=${BASH_REMATCH[1]}
                 local rest=${BASH_REMATCH[2]}
                 echo -n "$COLOR3$cmd$RST$COLOR5$rest"
             else
-                echo -n "$COLOR3$name$RST"
+                # STANDARD ITEMS:
+                # %-15s means "pad with spaces until 15 chars wide"
+                # We apply the color first, then print the padded name
+                printf "${COLOR3}%-15s${RST}" "$name"
             fi
 
             echo -n '%'
@@ -64,9 +71,8 @@ while getopts 'f' opt; do
     esac
 done
 
-# === TECH STACK WITH PLACEHOLDERS ===
-# We use these codes so the box draws correctly.
-# We will swap them for images later in make-commands-jsonp
+# === TECH STACK ===
+# Placeholders are kept short (__K__) for the box calculation.
 legend=(
     '__K__%Linux%Operating System / Kali'
     '__B__%BurpSuite%Web Vulnerability Scanner'
